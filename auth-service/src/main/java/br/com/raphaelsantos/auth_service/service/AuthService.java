@@ -3,6 +3,8 @@ package br.com.raphaelsantos.auth_service.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.raphaelsantos.auth_service.dto.LoginRequestDTO;
+import br.com.raphaelsantos.auth_service.dto.LoginResponseDTO;
 import br.com.raphaelsantos.auth_service.dto.RegisterRequestDTO;
 import br.com.raphaelsantos.auth_service.dto.UserResponseDTO;
 import br.com.raphaelsantos.auth_service.entity.AppUser;
@@ -38,5 +40,23 @@ public class AuthService {
             savedUser.getId(),
             savedUser.getUsername()
         );
+    }
+
+    public LoginResponseDTO login(LoginRequestDTO request) {
+
+        AppUser user = userRepository
+            .findByUsername(request.username())
+            .orElseThrow(
+                () -> new RuntimeException("User not found")
+            );
+
+        if (!passwordEncoder.matches(
+            request.password(), 
+            user.getPassword()
+        )) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return new LoginResponseDTO("login success");
     }
 }

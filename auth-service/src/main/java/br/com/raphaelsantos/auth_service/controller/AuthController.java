@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.raphaelsantos.auth_service.dto.LoginRequestDTO;
+import br.com.raphaelsantos.auth_service.dto.LoginResponseDTO;
 import br.com.raphaelsantos.auth_service.dto.RegisterRequestDTO;
 import br.com.raphaelsantos.auth_service.dto.UserResponseDTO;
 import br.com.raphaelsantos.auth_service.service.AuthService;
@@ -25,5 +27,9 @@ public class AuthController {
     public ResponseEntity<UserResponseDTO> register(@RequestBody RegisterRequestDTO requestDTO) {
         return ResponseEntity.ok(authService.register(requestDTO));
     }
-    
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO requestDTO) {
+        return ResponseEntity.ok(authService.login(requestDTO));
+    }
 }
