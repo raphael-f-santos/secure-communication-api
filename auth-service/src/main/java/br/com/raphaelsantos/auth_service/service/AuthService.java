@@ -15,10 +15,12 @@ public class AuthService {
     
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public UserResponseDTO register(RegisterRequestDTO request) {
@@ -57,6 +59,8 @@ public class AuthService {
             throw new RuntimeException("Invalid password");
         }
 
-        return new LoginResponseDTO("login success");
+        String token = jwtService.generateToken(user);
+
+        return new LoginResponseDTO(token);
     }
 }
